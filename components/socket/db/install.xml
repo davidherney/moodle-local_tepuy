@@ -40,22 +40,6 @@
         <INDEX NAME="chatsid" UNIQUE="false" FIELDS="chatsid"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="local_tepuy_settings" COMMENT="Settings for tepuy components">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="cmid" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="uid" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="param1" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="General parameter field"/>
-        <FIELD NAME="param2" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="General parameter field"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-      <INDEXES>
-        <INDEX NAME="uid" UNIQUE="false" FIELDS="uid"/>
-      </INDEXES>
-    </TABLE>
     <TABLE NAME="local_tepuy_gameangi" COMMENT="List of games">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>

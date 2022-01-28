@@ -19,7 +19,7 @@ define('AJAX_SCRIPT', true);
 require_once('../../../../config.php');
 require_once($CFG->dirroot . '/lib/outputcomponents.php');
 
-$uid        = required_param('uid', PARAM_TEXT);
+$uid        = optional_param('uid', '', PARAM_TEXT);
 $courseid   = optional_param('courseid', 0, PARAM_INT);
 $groupid    = optional_param('groupid', 0, PARAM_INT);
 $id         = optional_param('id', 0, PARAM_INT); // Course module id.
@@ -77,7 +77,7 @@ if (empty($id)) {
 
 require_login($course, false, $cm);
 
-// Check to see if groups are being used here
+// Check to see if groups are being used here.
 if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being used.
     if ($groupid = groups_get_activity_group($cm)) {
         if (!$group = groups_get_group($groupid)) {

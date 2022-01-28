@@ -26,3 +26,5 @@ $string['pluginname'] = 'Tepuy enhancer';
 
 $string['subplugintype_tepuycomponents'] = 'Tepuy component';
 $string['subplugintype_tepuycomponents_plural'] = 'Tepuy components';
+
+$string['resourcedisabled'] = 'Selected resource is disabled';

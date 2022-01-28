@@ -15,16 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'tepuycomponents_singledb', language 'en'.
+ * Upgrade code.
  *
- * @package   tepuycomponents_singledb
+ * @package   local_tepuy
  * @copyright 2021 David Herney - https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Tepuy Single DB';
-$string['privacy:metadata'] = 'The Tepuy Single DB plugin does not store any personal data.';
-$string['changenotowner'] = 'Only the owner user can change a record.';
-$string['changefieldserror'] = 'The fields don\'t have a correct JSON format';
-$string['deletenotowner'] = 'Only the owner user can delete a record.';
+defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Upgrade code.
+ *
+ * @param int $oldversion the version we are upgrading from
+ * @return bool always true
+ */
+function xmldb_local_tepuy_upgrade($oldversion) {
+    global $DB;
+
+    return true;
+}

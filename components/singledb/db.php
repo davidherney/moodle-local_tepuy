@@ -45,6 +45,12 @@ if (!$course = $DB->get_record('course', array('id' => $cm->course))) {
 
 require_login($course, false, $cm);
 
+$setting = $DB->get_record('local_tepuy_settings', array('cmid' => $cmid));
+
+if (!$setting || !$setting->enabled) {
+    print_error('resourcedisabled', 'local_tepuy');
+}
+
 // Check to see if groups are being used here
 if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being used.
     if ($groupid = groups_get_activity_group($cm)) {
@@ -69,7 +75,7 @@ if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being use
 
 switch($op) {
     case 'list':
-        $params = array('tablekey' => $table);
+        $params = array('cmid' => $cmid, 'tablekey' => $table);
 
         if ($relatedid) {
             $params['relatedid'] = $relatedid;
@@ -91,7 +97,8 @@ switch($op) {
     break;
     case 'save':
         $fields = required_param('fields', PARAM_RAW);
-        $params = array('groupid' => $groupid,
+        $params = array('cmid' => $cmid,
+                        'groupid' => $groupid,
                         'tablekey' => $table,
                         'relatedid' => $relatedid,
                         'datastore' => $fields);
@@ -104,7 +111,8 @@ switch($op) {
         $to = required_param('to', PARAM_TEXT);
         $id = required_param('id', PARAM_INT);
 
-        $params = array('tablekey' => $table,
+        $params = array('cmid' => $cmid,
+                        'tablekey' => $table,
                         'id' => $id);
         $record = $DB->get_record('local_tepuy_singledb', $params);
 
@@ -132,7 +140,8 @@ switch($op) {
         $fields = required_param('fields', PARAM_RAW);
         $id = required_param('id', PARAM_INT);
 
-        $params = array('tablekey' => $table,
+        $params = array('cmid' => $cmid,
+                        'tablekey' => $table,
                         'id' => $id);
         $record = $DB->get_record('local_tepuy_singledb', $params);
 
@@ -141,14 +150,14 @@ switch($op) {
         if(!$record) {
             $res->result = false;
         } else if ($record->relatedid != $USER->id) {
-            $res->error = 'No puede modificar el registro por no ser el propietario';
+            $res->error = get_string('changenotowner', 'tepuycomponents_singledb');
             $res->result = false;
         } else {
             $newdata = @json_decode($fields);
             $record->datastore = @json_decode($record->datastore);
 
             if (!is_object($newdata)) {
-                $res->error = 'No se pudo ejecutar esta acción.';
+                $res->error = get_string('changefieldserror', 'tepuycomponents_singledb');
             } else {
                 foreach($newdata as $field => $value) {
                     if (property_exists($record->datastore, $field)) {
@@ -168,14 +177,15 @@ switch($op) {
         $id = required_param('id', PARAM_INT);
         $res = new stdClass();
 
-        $params = array('tablekey' => $table,
+        $params = array('cmid' => $cmid,
+                        'tablekey' => $table,
                         'id' => $id);
         $record = $DB->get_record('local_tepuy_singledb', $params);
 
         if(!$record) {
             $res->result = false;
         } else if ($record->relatedid != $USER->id) {
-            $res->error = 'No puede borrar el registro por no ser el propietario';
+            $res->error = get_string('deletenotowner', 'tepuycomponents_singledb');
             $res->result = false;
         } else {
             $DB->delete_records('local_tepuy_singledb', array('id' => $id));
@@ -184,7 +194,6 @@ switch($op) {
 
     break;
 }
-
 
 echo json_encode($res);
 exit;
