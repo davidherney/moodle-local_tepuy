@@ -97,11 +97,21 @@ switch($op) {
     break;
     case 'save':
         $fields = required_param('fields', PARAM_RAW);
+        $data = @json_decode($fields);
+
+        if (!$data || !is_object($data)) {
+            $dataobj = new stdClass();
+            $dataobj->value = $data;
+            $datastore = json_encode($dataobj);
+        } else {
+            $datastore = json_encode($data);
+        }
+
         $params = array('cmid' => $cmid,
                         'groupid' => $groupid,
                         'tablekey' => $table,
-                        'relatedid' => $relatedid,
-                        'datastore' => $fields);
+                        'relatedid' => $USER->id,
+                        'datastore' => $datastore);
         $id = $DB->insert_record('local_tepuy_singledb', $params, true);
         $res = new stdClass();
         $res->id = $id;
@@ -119,6 +129,9 @@ switch($op) {
         $res = new stdClass();
 
         if(!$record) {
+            $res->result = false;
+        } else if ($record->relatedid != $USER->id) {
+            $res->error = get_string('changenotowner', 'tepuycomponents_singledb');
             $res->result = false;
         } else {
             $newdata = @json_decode($fields);
