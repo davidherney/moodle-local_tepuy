@@ -24,14 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-if ($hassiteconfig) {
-    $settings = new admin_settingpage('tepuycomponents_socket', get_string('pluginname', 'tepuycomponents_socket'));
-
-    $name = 'components_socket_cronuri';
-    $title = get_string($name, 'tepuycomponents_socket');
-    $description = get_string($name.'_desc', 'tepuycomponents_socket');
-    $setting = new admin_setting_configtextarea('tepuycomponents_socket/' . $name, $title, $description, 'ws://localhost:1234/skey=');
-    $settings->add($setting);
-
-    $ADMIN->add('local_tepuy', $settings);
-}
+$name = 'components_socket_cronuri';
+$title = get_string($name, 'tepuycomponents_socket');
+$description = get_string($name.'_desc', 'tepuycomponents_socket');
+$setting = new admin_setting_configtextarea('tepuycomponents_socket/' . $name, $title, $description, 'ws://localhost:1234/skey=');
+$componentsettings->add($setting);

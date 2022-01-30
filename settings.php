@@ -25,6 +25,40 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($hassiteconfig) {
-    $settings = new admin_settingpage('local_tepuy', get_string('pluginname', 'local_tepuy'));
+
+    $generalsettings = null;
+
+    // For general settings. Not used yet.
+    //$generalsettings = new admin_settingpage('local_tepuy', get_string('pluginname', 'local_tepuy'));
+
+    $plugins = core_plugin_manager::instance()->get_plugins_of_type('tepuycomponents');
+
+    if ($plugins) {
+
+        $ADMIN->add('localplugins', new admin_category('localtepuysettingscomponents',
+                                            get_string('pluginname', 'local_tepuy')));
+
+        if ($generalsettings) {
+            $ADMIN->add('localtepuysettingscomponents', $generalsettings);
+        }
+
+        foreach ($plugins as $plugin) {
+
+            $include = $CFG->dirroot . "/local/tepuy/components/{$plugin->name}/settings.php";
+
+            if (!file_exists($include)) {
+                continue;
+            }
+
+            $componentsettings = new admin_settingpage('localtepuysettingstepuycomponents' . $plugin->name,
+                                                get_string('pluginname', 'tepuycomponents_' .$plugin->name), 'moodle/site:config');
+
+            include($CFG->dirroot . "/local/tepuy/components/{$plugin->name}/settings.php");
+
+            if (!empty($componentsettings)) {
+                $ADMIN->add('localtepuysettingscomponents', $componentsettings);
+            }
+        }
+    }
 
 }
