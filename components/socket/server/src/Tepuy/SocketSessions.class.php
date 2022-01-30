@@ -11,26 +11,29 @@ use Tepuy\AppCodeException;
 class SocketSessions {
     private static $_sessions = array();
     private static $_resources = array();
+
+    /** @var array */
     private static $_settings = array();
-    private static $_settingsbyuid = array();
+
+    private static $_settingsbycmid = array();
 
     public static function addConnection($conn, $sess, $iscron = false) {
 
-        if (!isset(self::$_sessions[$sess->uid])) {
-            self::$_sessions[$sess->uid] = new \stdClass();
-            self::$_sessions[$sess->uid]->clients = new \SplObjectStorage;
-            self::$_sessions[$sess->uid]->skeys = array();
-            self::$_sessions[$sess->uid]->crons = array();
+        if (!isset(self::$_sessions[$sess->cmid])) {
+            self::$_sessions[$sess->cmid] = new \stdClass();
+            self::$_sessions[$sess->cmid]->clients = new \SplObjectStorage;
+            self::$_sessions[$sess->cmid]->skeys = array();
+            self::$_sessions[$sess->cmid]->crons = array();
         }
 
-        self::$_resources[$conn->resourceId] = $sess->uid;
+        self::$_resources[$conn->resourceId] = $sess->cmid;
 
-        // Store the new connection to send messages to later
-        self::$_sessions[$sess->uid]->clients->attach($conn);
-        self::$_sessions[$sess->uid]->skeys[$conn->resourceId] = $sess;
+        // Store the new connection to send messages to later.
+        self::$_sessions[$sess->cmid]->clients->attach($conn);
+        self::$_sessions[$sess->cmid]->skeys[$conn->resourceId] = $sess;
 
         if ($iscron) {
-            self::$_sessions[$sess->uid]->crons[$conn->resourceId] = true;
+            self::$_sessions[$sess->cmid]->crons[$conn->resourceId] = true;
         }
     }
 
@@ -85,7 +88,7 @@ class SocketSessions {
         return !isset($session) ? null : $session->clients;
     }
 
-    public static function getUIDById($id) {
+    public static function getCmidById($id) {
         if (!isset(self::$_resources[$id])) {
             return null;
         }
@@ -97,11 +100,29 @@ class SocketSessions {
 
         self::$_settings = $settings;
 
-        self::$_settingsbyuid = array();
+        self::$_settingsbycmid = array();
         foreach($settings as $setting) {
             $settingsdata = json_decode($setting->param1);
-            self::$_settingsbyuid[$setting->uid] = $settingsdata;
+            $setting->data = $settingsdata;
+            self::$_settingsbycmid[$setting->cmid] = $setting;
         }
+    }
+
+    public static function getSetting($id, $prop, $default = null) {
+
+        if (!isset(self::$_resources[$id])) {
+            return $default;
+        }
+
+        $resourceid = self::$_resources[$id];
+
+        if (isset(self::$_settingsbycmid[$resourceid])) {
+            if (property_exists(self::$_settingsbycmid[$resourceid], $prop)) {
+                return self::$_settingsbycmid[$resourceid]->$prop;
+            }
+        }
+
+        return $default;
     }
 
     public static function getGameActions($id) {
@@ -123,8 +144,8 @@ class SocketSessions {
 
         $resourceid = self::$_resources[$id];
 
-        if (isset(self::$_settingsbyuid[$resourceid])) {
-            $params = self::$_settingsbyuid[$resourceid];
+        if (isset(self::$_settingsbycmid[$resourceid])) {
+            $params = self::$_settingsbycmid[$resourceid]->data;
             if (property_exists($params, $prop)) {
                 return $params->$prop;
             }

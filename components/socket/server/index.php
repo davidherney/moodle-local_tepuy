@@ -37,7 +37,7 @@ define("APP_SOURCE_PATH", __DIR__."/src");
 require __DIR__ . '/vendor/autoload.php';
 require 'autoload.php';
 
-//Single server: ws protocol.
+// Single server: ws protocol.
 $port = 8080;
 $server = IoServer::factory(
     new HttpServer(

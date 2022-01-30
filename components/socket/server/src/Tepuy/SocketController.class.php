@@ -16,9 +16,13 @@ class SocketController implements MessageComponentInterface {
         global $DB;
 
         if (!$settings = $DB->get_records('local_tepuy_settings')) {
-            throw new \Exception(get_string('settingsnotfound', 'tepuycomponents_socket'));
+            Logging::trace(Logging::LVL_DETAIL, get_string('settingsnotfound', 'tepuycomponents_socket') . "\n");
+            return;
         }
 
+        // ToDo: Se debería recargar cuando se genera una adición en local_tepuy_settings, porque si el servicio sigue corriendo
+        // no tomará los nuevos chats. Igual funcionan el chat, pero porque no se hece uso de todas las propiedades, solamente
+        // bygroup osea que si el chat es por grupo no lo tomará.
         SocketSessions::setSettings($settings);
     }
 

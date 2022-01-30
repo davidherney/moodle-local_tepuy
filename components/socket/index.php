@@ -20,7 +20,7 @@ require_once('../../../../config.php');
 require_once($CFG->dirroot . '/lib/outputcomponents.php');
 require_once($CFG->dirroot . '/local/tepuy/components/socket/locallib.php');
 
-$uid        = required_param('uid', PARAM_TEXT);
+$uid        = optional_param('uid', '', PARAM_TEXT);
 $courseid   = optional_param('courseid', 0, PARAM_INT);
 $groupid    = optional_param('groupid', 0, PARAM_INT);
 $id         = optional_param('id', 0, PARAM_INT); // Course module id.
@@ -108,11 +108,22 @@ if (!$settings = $DB->get_record('local_tepuy_settings', array('cmid' => $cm->id
     print_error('settingsnotfound');
 }
 
-$settingsdata = json_decode($settings->param1);
+// Check if the activity is a chat or other activity with enabled chat.
+$chatid = 0;
+if ($type == 'chat') {
+    $chatid = $cm->instance;
+} else {
 
-if (property_exists($settingsdata, 'chatid')) {
+    // Check if the chatid is setted in param1.
+    $settingsdata = json_decode($settings->param1);
 
-    if (!$chatsid = chat_login_user($settingsdata->chatid, 'tepuy', $groupid, $course)) {
+    if (property_exists($settingsdata, 'chatid')) {
+        $chatid = $settingsdata->chatid;
+    }
+}
+
+if ($chatid) {
+    if (!$chatsid = chat_login_user($chatid, 'tepuy', $groupid, $course)) {
         print_error('cantlogin');
     }
 
@@ -122,11 +133,11 @@ if (property_exists($settingsdata, 'chatid')) {
         $socketchat->sid = $sess->id;
         $socketchat->chatsid = $chatsid;
         $DB->insert_record('local_tepuy_socket_chat', $socketchat);
+
     } else if ($socketchat->chatsid != $chatsid) {
         $socketchat->chatsid = $chatsid;
         $DB->update_record('local_tepuy_socket_chat', $socketchat);
     }
-
 }
 
 try {
@@ -145,6 +156,7 @@ $res->courseid = $course->id;
 $res->courseshortname = format_string($course->shortname, true, array('context' => context_course::instance($course->id)));
 $res->groupid = $groupid;
 $res->groupname = $groupname;
+$res->secure = substr($CFG->wwwroot, 0, 6) == 'https:';
 
 if (isset($_SERVER['HTTP_HOST'])) {
     $res->serverurl = $_SERVER['HTTP_HOST'] . "/wss2/";

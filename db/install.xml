@@ -11,6 +11,7 @@
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="uid" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="enabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Defines if resource is enabled"/>
+        <FIELD NAME="bygroup" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="If activity is in groups"/>
         <FIELD NAME="param1" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="General parameter field"/>
         <FIELD NAME="param2" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="General parameter field"/>
       </FIELDS>
