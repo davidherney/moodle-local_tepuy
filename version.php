@@ -23,9 +23,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2019092606;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2019092607;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2018051700;        // Requires this Moodle version.
 $plugin->cron = 0;
-$plugin->release = 'Autana';           // A special and big Tepuy.
+$plugin->release = 'Autana';            // A special and big Tepuy.
 $plugin->component = 'local_tepuy';     // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_BETA;
+$plugin->maturity = MATURITY_STABLE;    // How stable the plugin is: MATURITY_ALPHA, MATURITY_BETA, MATURITY_RC, MATURITY_STABLE.
