@@ -270,8 +270,8 @@
     font-family: 'FontAwesome';
     position: absolute;
     color: #fff;
-    left: 5px;
-    top: calc(50% - 10px);
+    left: -97px;
+    top: calc(50% + 25px);
     font-size: 45px;
     line-height: 20px;
 }
@@ -362,6 +362,12 @@
 .tepuy-c-resourcebutton.active,
 .tepuy-c-resourcebutton.complete {
     background: linear-gradient(to bottom, #fff 0%, #64aa23 50%, #64aa23 100%);
+}
+
+.tepuy-c-resourcebutton .iconwithhelp {
+    position: absolute;
+    right: -100px;
+    bottom: calc(50% - 50px);
 }
 
 /********************************************************************************/
