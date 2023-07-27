@@ -103,9 +103,9 @@ define(['jquery'], function($) {
                 }
            });
 
-            $('completion.complete').parents('.completion-parent').addClass('complete');
+            $('.completiontag.complete').parents('.completion-parent').addClass('complete');
 
-            $('completion.incomplete').parents('.completion-parent').addClass('incomplete');
+            $('.completiontag.incomplete').parents('.completion-parent').addClass('incomplete');
 
             $('[tepuy-toggle]').on('click', function() {
                 var $this = $(this);

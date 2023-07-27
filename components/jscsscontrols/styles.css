@@ -241,12 +241,9 @@
     font-size: 15px;
 }
 
-.tepuy-c-resourcebutton a {
-    color: #fff;
-    text-decoration: none;
-}
-
-.tepuy-c-resourcebutton a:hover {
+.tepuy-c-resourcebutton a,
+.tepuy-c-resourcebutton a:hover,
+.tepuy-c-resourcebutton a:focus {
     color: #fff;
     text-decoration: none;
 }
@@ -270,8 +267,8 @@
     font-family: 'FontAwesome';
     position: absolute;
     color: #fff;
-    left: -97px;
-    top: calc(50% + 25px);
+    left: 5px;
+    top: calc(50% - 10px);
     font-size: 45px;
     line-height: 20px;
 }
@@ -329,6 +326,7 @@
     min-height: 60px;
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .tepuy-c-resourcebutton.active .tepuy-c-rb-name a,
@@ -366,8 +364,13 @@
 
 .tepuy-c-resourcebutton .iconwithhelp {
     position: absolute;
-    right: -100px;
-    bottom: calc(50% - 50px);
+    right: 0;
+    bottom: calc(50% - 10px);
+    z-index: 2;
+}
+
+.tepuy-c-resourcebutton .activityinsummarytpl .activity-basis {
+    display: block;
 }
 
 /********************************************************************************/
