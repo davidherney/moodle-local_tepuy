@@ -23,6 +23,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Potenciador de Tepuy';
-
+$string['privacy:metadata'] = 'El plugin local Potenciador Tepuy no almacena datos personales.';
 $string['subplugintype_tepuycomponents'] = 'Componente de Tepuy';
 $string['subplugintype_tepuycomponents_plural'] = 'Componentes de Tepuy';

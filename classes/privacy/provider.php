@@ -15,15 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Privacy Subsystem implementation for local_tepuy.
  *
  * @package   local_tepuy
- * @copyright 2019 David Herney - cirano
+ * @copyright 2025 David Herney - https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace local_tepuy\privacy;
+
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Tepuy enhancer';
-$string['privacy:metadata'] = 'The local Tepuy enhancer plugin does not store any personal data.';
-$string['resourcedisabled'] = 'Selected resource is disabled';
-$string['subplugintype_tepuycomponents'] = 'Tepuy component';
-$string['subplugintype_tepuycomponents_plural'] = 'Tepuy components';
+/**
+ * Privacy Subsystem for local_tepuy implementing null_provider.
+ *
+ * @copyright 2021 David Herney - https://bambuco.co
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class provider implements \core_privacy\local\metadata\null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
+    }
+}
