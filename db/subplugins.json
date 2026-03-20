@@ -1,5 +1,8 @@
 {
+    "subplugintypes": {
+        "tepuycomponents": "components"
+    },
     "plugintypes": {
-        "tepuycomponents": "local\/tepuy\/components"
+        "tepuycomponents": "local/tepuy/components"
     }
 }
